@@ -1,5 +1,3 @@
-# script to convert Ensembl IDs to gene symbols
-# setwd("C:/Users/angel/Desktop/Rthings/Ensembl IDs to gene symbols")
 
 library(biomaRt)
 # library(annotables)
@@ -10,7 +8,7 @@ library(tidyverse)
 # input list of Ensembl IDs
 ensembl.ids <- read.delim("gene_ids.txt", header = FALSE)
 
-# method 1: biomaRt
+# method 1: biomaRt -----------------------------
 listEnsembl()
 ensembl <- useEnsembl(biomart = "genes")
 datasets <- listDatasets(ensembl)
@@ -25,7 +23,7 @@ getBM(attributes = c("ensembl_gene_id", "external_gene_name"),
       values = ensembl.ids$V1,
       mart = ensembl.con)
 
-# method 2: annotation DBs
+# method 2: annotation DBs -----------------------------
 # first database
 keytypes(org.Hs.eg.db)
 columns(org.Hs.eg.db)
@@ -34,7 +32,6 @@ mapIds(org.Hs.eg.db,
        keys = ensembl.ids$V1,
        keytype = 'ENSEMBL',
        column = 'SYMBOL')
-
 
 #second database
 keytypes(EnsDb.Hsapiens.v86)
@@ -45,5 +42,5 @@ mapIds(EnsDb.Hsapiens.v86,
        keytype = "GENEID",
        column = "SYMBOL")
 
-
+sessionInfo()
 
